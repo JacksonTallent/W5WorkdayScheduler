@@ -1,6 +1,5 @@
 const thecontainer = $(".container");
-let initHour = moment().hour();
-if (initHour > 12) initHour -= 12;
+let initHour = moment();
 //todo check LS on startup to see notes
 // 
 
@@ -11,35 +10,27 @@ function saveToLS(hour, content) {
 }
 
 function drawSchedule() {
-    let hourVar = 9;
+    const twelve = (number) => {return number > 12 ? number-12 : number}
 
-    for (i=0; i<9; i++){
-        let timeblock = $("<div>").attr("id",`tb${hourVar}`);
-        let twelve = hourVar-12;
-        let clock = $("<h2>").html(()=>{
-            if (hourVar > 12) return twelve
-            else return hourVar
-        })
-    
-        if (initHour > hourVar) {
+    for (i=9; i<18; i++){
+        let timeblock = $(`#${twelve(i)}h`);
+        let newHour = moment(i, "HH")
+        if (moment(i, "HH").isBefore(initHour)) {
             timeblock.css("background-color", "red");
         }
-        else if (initHour < hourVar) {
+        else if (moment(i, "HH").isAfter(initHour)) {
             timeblock.css("background-color", "green")
         }
-        else {
+        else if (initHour.isSame(moment(i, "HH"))) {
             timeblock.css("background-color", "gray")
-            console.log("3")
+            console.log("hi")
         }
-        let input = $("<input>").val("hi")
-        let saveButton = $("<button>").attr("id", hourVar).click(saveToLS(hourVar,input.val()));
-    
-        timeblock.append(saveButton);
-        timeblock.append(clock);
-        timeblock.append(input);
-        thecontainer.append(timeblock);
-        hourVar++;
+           $(`#${i}b`).on("click",(event)=>{ 
+            event.stopPropagation;
+            saveToLS(i,$(`#${i}i`).val());
+        })
     }
 }
 drawSchedule();
 console.log(initHour);
+console.log(moment(14,"HH"));
