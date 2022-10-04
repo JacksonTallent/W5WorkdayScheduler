@@ -3,34 +3,42 @@ let initHour = moment();
 //todo check LS on startup to see notes
 // 
 
+function loadFromLS() {
+    let momentobj = moment(localStorage.getItem("momentobj"));
+    if (momentobj.isSame(initHour, "date")) {
+        for (i=9;i<18;i++) {
+            $(`#${i}i`).val(localStorage.getItem(i));
+        }
+    }
+    
+}
+
 function saveToLS(hour, content) {
     console.log(`Content: ${content}`);
     console.log(`~~~~`);
     console.log(`Hour: ${hour}`);
+    localStorage.setItem(hour, content);
 }
 
 function drawSchedule() {
     const twelve = (number) => {return number > 12 ? number-12 : number}
-
     for (i=9; i<18; i++){
-        let timeblock = $(`#${twelve(i)}h`);
-        let newHour = moment(i, "HH")
-        if (moment(i, "HH").isBefore(initHour)) {
-            timeblock.css("background-color", "red");
+        let timeblock = $(`#${i}h`);
+
+        if (i < initHour.hour()) {
+            timeblock.addClass("past");
         }
-        else if (moment(i, "HH").isAfter(initHour)) {
-            timeblock.css("background-color", "green")
+        else if (i > initHour.hour()) {
+            timeblock.addClass("future");
         }
-        else if (initHour.isSame(moment(i, "HH"))) {
-            timeblock.css("background-color", "gray")
+        else if (initHour.hour() === i) {
+            timeblock.addClass("present");
             console.log("hi")
         }
-           $(`#${i}b`).on("click",(event)=>{ 
-            event.stopPropagation;
-            saveToLS(i,$(`#${i}i`).val());
-        })
     }
 }
+loadFromLS();
+localStorage.setItem("momentobj", initHour)
 drawSchedule();
-console.log(initHour);
+console.log(initHour.format());
 console.log(moment(14,"HH"));
