@@ -23,7 +23,7 @@ function saveToLS(hour, content) {
 function drawSchedule() {
     const twelve = (number) => {return number > 12 ? number-12 : number}
     for (i=9; i<18; i++){
-        let timeblock = $(`#${i}h`);
+        let timeblock = $(`#${i}i`);
 
         if (i < initHour.hour()) {
             timeblock.addClass("past");
