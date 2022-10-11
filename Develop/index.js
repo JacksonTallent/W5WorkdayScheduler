@@ -1,7 +1,7 @@
-const thecontainer = $(".container");
 let initHour = moment();
 //todo check LS on startup to see notes
 // 
+
 
 function loadFromLS() {
     let momentobj = moment(localStorage.getItem("momentobj"));
@@ -37,8 +37,11 @@ function drawSchedule() {
         }
     }
 }
+
+$("#currentDay").text(moment().format("[Today is] dddd, MMMM Do YYYY"));
 loadFromLS();
 localStorage.setItem("momentobj", initHour)
 drawSchedule();
+
 console.log(initHour.format());
 console.log(moment(14,"HH"));
