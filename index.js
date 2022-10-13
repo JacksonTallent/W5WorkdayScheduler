@@ -1,8 +1,5 @@
-const thecontainer = $(".container");
-let initHour = moment();
-//TODO SAY DAY AND DATE AT TOP
-// 
-
+const initHour = moment();
+//Checks if the content from local storage is from the same date then populates input fields with the saved text
 function loadFromLS() {
     let momentobj = moment(localStorage.getItem("momentobj"));
     if (momentobj.isSame(initHour, "date")) {
@@ -10,20 +7,18 @@ function loadFromLS() {
             $(`#${i}i`).val(localStorage.getItem(i));
         }
     }
-    
 }
 
+//Saves the selected hours text area
 function saveToLS(hour, content) {
-    console.log(`Content: ${content}`);
-    console.log(`~~~~`);
-    console.log(`Hour: ${hour}`);
     localStorage.setItem(hour, content);
 }
 
+//Colors timeblocks depending on the time
 function drawSchedule() {
     const twelve = (number) => {return number > 12 ? number-12 : number}
     for (i=9; i<18; i++){
-        let timeblock = $(`#${i}h`);
+        let timeblock = $(`#${i}i`);
 
         if (i < initHour.hour()) {
             timeblock.addClass("past");
@@ -33,12 +28,14 @@ function drawSchedule() {
         }
         else if (initHour.hour() === i) {
             timeblock.addClass("present");
-            console.log("hi")
         }
     }
 }
+
+//Tells the current date in the jumbotron
+$("#currentDay").text(moment().format("[Today is] dddd, MMMM Do YYYY"));
+
 loadFromLS();
+//Updates the momentobj that is compared to the current time.
 localStorage.setItem("momentobj", initHour)
 drawSchedule();
-console.log(initHour.format());
-console.log(moment(14,"HH"));
