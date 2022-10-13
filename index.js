@@ -1,6 +1,6 @@
 const thecontainer = $(".container");
 let initHour = moment();
-//todo check LS on startup to see notes
+//TODO SAY DAY AND DATE AT TOP
 // 
 
 function loadFromLS() {
